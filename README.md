@@ -1,42 +1,46 @@
 # Despensa La Bendición
 
-Proyecto Laravel para gestión de despensa.
+Proyecto Laravel para la gestión de una despensa.
+
+---
 
 ## Requisitos
 
-- PHP >= 8.1
-- Composer
-- MySQL o MariaDB
-- Git
+- **PHP** >= 8.1
+- **Composer**
+- **MySQL** o **MariaDB**
+- **Git**
+
+---
 
 ## Instalación
 
 1. **Clona el repositorio**
-    ```sh
-    git clone https://github.com/usuario/tu-repo.git
-    cd tu-repo
+    ```bash
+    git clone https://github.com/JFranVT/proyecto-final.git
+    cd proyecto-final
     ```
 
 2. **Instala dependencias de Composer**
-    ```sh
+    ```bash
     composer install
     ```
 
 3. **Copia el archivo de entorno**
     - En Linux/Mac:
-      ```sh
-      cp .env.example .env
-      ```
+        ```bash
+        cp .env.example .env
+        ```
     - En Windows:
-      ```sh
-      copy .env.example .env
-      ```
+        ```bash
+        copy .env.example .env
+        ```
 
 4. **Configura el archivo `.env`**
     - Edita `.env` y coloca los datos de tu base de datos y otros parámetros necesarios.
 
 5. **Genera la clave de la aplicación**
-    ```sh
+    ```bash
     php artisan key:generate
     ```
 
@@ -45,7 +49,7 @@ Proyecto Laravel para gestión de despensa.
     - Importa el archivo `.sql` proporcionado (si existe) usando tu gestor de base de datos favorito (phpMyAdmin, MySQL Workbench, consola, etc.).
 
 7. **Inicia el servidor**
-    ```sh
+    ```bash
     php artisan serve
     ```
 
@@ -54,11 +58,35 @@ Proyecto Laravel para gestión de despensa.
 
 ---
 
-## Notas
+## Estructura principal del proyecto
 
-- Si tienes problemas con permisos en `storage` o `bootstrap/cache`, asegúrate de darles permisos de escritura.
-- Este proyecto **no incluye módulo de imágenes** ni migraciones automáticas. Debes importar la base de datos manualmente.
+- **Modelos:**  
+  Ubicados en `app/Models`, representan entidades como Almacen, Cliente, Producto, Proveedor, Usuario, Venta, etc.
+
+- **Controladores:**  
+  Ubicados en `app/Http/Controllers`, gestionan la lógica de negocio y las rutas.
+
+- **Vistas Blade:**  
+  Ubicadas en `resources/views`, incluyen carpetas para almacenes, clientes, productos, proveedores, usuarios, ventas, además de vistas principales como `home.blade.php`, `panel.blade.php` y `welcome.blade.php`.
+
+- **Rutas:**  
+  Ubicadas en `routes/web.php` para rutas web y `routes/console.php` para comandos de consola.
 
 ---
 
-**¡Listo! Tu proyecto estará funcionando en la nueva PC.**
+## Notas
+
+- Si tienes problemas con permisos en `storage` o `bootstrap/cache`, asegúrate de darles permisos de escritura.
+- Este proyecto **no incluye módulo de imágenes ni migraciones automáticas**. Debes importar la base de datos manualmente.
+- Si necesitas personalizar las vistas, revisa la carpeta `resources/views`.
+
+---
+
+## Créditos
+
+Desarrollado por JFranVT
+
+---
+
+¿Tienes dudas o sugerencias?  
+Abre un issue en este repositorio.
