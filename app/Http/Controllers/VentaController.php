@@ -35,6 +35,14 @@ class VentaController extends Controller
             'productos.*.Precio_Unitario' => 'required|numeric|min:0',
         ]);
 
+        // Validar stock antes de registrar la venta
+        foreach ($request->productos as $detalle) {
+            $producto = Producto::find($detalle['ID_Producto']);
+            if (!$producto || $producto->Stock < $detalle['Cantidad']) {
+                return back()->withErrors(['stock' => 'No hay suficiente stock para el producto: ' . ($producto->Descripcion ?? 'Desconocido')])->withInput();
+            }
+        }
+
         // Calcular el total de la venta
         $total = 0;
         foreach ($request->productos as $detalle) {
@@ -48,7 +56,7 @@ class VentaController extends Controller
             'Total' => $total,
         ]);
 
-        // Crear los detalles de venta
+        // Crear los detalles de venta y descontar stock
         foreach ($request->productos as $detalle) {
             DetalleVenta::create([
                 'ID_Venta' => $venta->ID_Venta,
@@ -56,6 +64,11 @@ class VentaController extends Controller
                 'Cantidad' => $detalle['Cantidad'],
                 'Precio_Unitario' => $detalle['Precio_Unitario'],
             ]);
+
+            // Descontar stock del producto
+            $producto = Producto::find($detalle['ID_Producto']);
+            $producto->Stock -= $detalle['Cantidad'];
+            $producto->save();
         }
 
         // Redirigir a la factura

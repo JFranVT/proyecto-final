@@ -3,6 +3,11 @@
 @section('content')
 <div class="container">
     <h1>Registrar Venta</h1>
+    @if($errors->has('stock'))
+        <div class="alert alert-danger">
+            {{ $errors->first('stock') }}
+        </div>
+    @endif
     <form action="{{ route('ventas.store') }}" method="POST">
         @csrf
         <div class="mb-3">

@@ -9,6 +9,13 @@ use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\AlmacenController;
 use App\Http\Controllers\VentaController;
 use App\Http\Controllers\DetalleVentaController;
+use App\Http\Controllers\PanelController;
+use App\Models\Venta;
+use App\Models\Producto;
+use App\Models\Cliente;
+use App\Models\Proveedor;
+use App\Models\Usuario;
+use App\Models\Almacen;
 
 // Ruta de bienvenida
 Route::get('/', function () {
@@ -22,8 +29,33 @@ Route::post('logout', [LoginController::class, 'logout'])->name('logout');
 
 // Panel principal protegido
 Route::middleware('auth')->group(function () {
+    // Ruta principal del panel
     Route::get('panel', function () {
-        return view('panel');
+        $ventas = Venta::count();
+        $productos = Producto::count();
+        $clientes = Cliente::count();
+        $proveedores = Proveedor::count();
+
+        // Ventas del mes actual
+        $ventasMes = Venta::whereMonth('Fecha', now()->month)
+            ->whereYear('Fecha', now()->year)
+            ->count();
+
+        // Ingresos del mes actual
+        $ingresosMes = Venta::whereMonth('Fecha', now()->month)
+            ->whereYear('Fecha', now()->year)
+            ->sum('Total');
+
+        // Productos con bajo stock (menos de 5)
+        $productosBajoStock = Producto::where('Stock', '<', 5)->count();
+
+        // Últimas 5 ventas
+        $ultimasVentas = Venta::orderBy('Fecha', 'desc')->take(5)->get();
+
+        return view('panel', compact(
+            'ventas', 'productos', 'clientes', 'proveedores',
+            'ventasMes', 'ingresosMes', 'productosBajoStock', 'ultimasVentas'
+        ));
     })->name('panel');
 
     Route::resource('proveedores', ProveedorController::class);
